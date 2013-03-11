@@ -3,6 +3,7 @@ package com.sonyericsson.zoom;
 
 import android.content.Context;
 import android.graphics.PointF;
+import android.os.Handler;
 import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -64,6 +65,51 @@ public class PinchZoomListener implements View.OnTouchListener {
     }
 
     /**
+     * flag to wait long click event
+     */
+    private boolean mWaitingForLongClick;
+	private Handler mHandler = null;
+    private PendingCheckForLongClick mPendingCheckForLongClick = null;
+
+    class PendingCheckForLongClick implements Runnable {
+        View view;
+        public PendingCheckForLongClick(View v) {
+			super();
+			this.view = v;
+		}
+
+		public void run() {
+            if (mWaitingForLongClick) {
+                mWaitingForLongClick = false;
+                if(view != null)
+                	view.performLongClick();
+            }
+        }
+    }
+
+    private void checkForLongClick(int delayOffset, View v) {
+        mWaitingForLongClick = true;
+
+        if (mHandler == null) {
+            mHandler = new Handler();
+        }
+        if (mPendingCheckForLongClick != null) {
+            mHandler.removeCallbacks(mPendingCheckForLongClick);
+        } else {
+            mPendingCheckForLongClick = new PendingCheckForLongClick(v);
+        }
+        mHandler.postDelayed(mPendingCheckForLongClick,
+                ViewConfiguration.getLongPressTimeout() - delayOffset);
+    }
+
+    private void clearCheckForLongClick() {
+        mWaitingForLongClick = false;
+        if (mHandler != null && mPendingCheckForLongClick!= null) {
+            mHandler.removeCallbacks(mPendingCheckForLongClick);
+        }
+    }
+
+    /**
      * Sets the zoom control to manipulate
      * 
      * @param control Zoom control
@@ -89,6 +135,7 @@ public class PinchZoomListener implements View.OnTouchListener {
                 mDownY = y;
                 mX = x;
                 mY = y;
+                checkForLongClick(0, v);
                 break;
                 
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -99,6 +146,7 @@ public class PinchZoomListener implements View.OnTouchListener {
                         mMode = Mode.PINCHZOOM;
                     }
                 }
+                clearCheckForLongClick();
                 break;
                 
             case MotionEvent.ACTION_UP:
@@ -114,11 +162,13 @@ public class PinchZoomListener implements View.OnTouchListener {
                 }
                 mVelocityTracker.recycle();
                 mVelocityTracker = null;
+                clearCheckForLongClick();
             case MotionEvent.ACTION_POINTER_UP:
                 if(event.getPointerCount() > 1 &&  mMode == Mode.PINCHZOOM){
                     panAfterPinchTimeout = System.currentTimeMillis() + 100;
                 }
                 mMode = Mode.UNDEFINED;                
+                clearCheckForLongClick();
                 break;
                 
             case MotionEvent.ACTION_MOVE:
@@ -144,6 +194,7 @@ public class PinchZoomListener implements View.OnTouchListener {
 
                     if (dist >= mScaledTouchSlop ){
                         mMode = Mode.PAN;
+                        clearCheckForLongClick();
                     }
                 }
                 

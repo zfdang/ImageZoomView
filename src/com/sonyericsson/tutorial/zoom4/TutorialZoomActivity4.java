@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -36,7 +37,7 @@ import com.sonyericsson.zoom.PinchZoomListener;
 /**
  * Activity for zoom tutorial 1
  */
-public class TutorialZoomActivity4 extends Activity {
+public class TutorialZoomActivity4 extends Activity implements OnLongClickListener {
 
     /** Constant used as menu item id for resetting zoom state */
     private static final int MENU_ID_RESET = 0;
@@ -72,7 +73,6 @@ public class TutorialZoomActivity4 extends Activity {
         mPinchZoomListener = new PinchZoomListener(getApplicationContext());
         mPinchZoomListener.setZoomControl(mZoomControl);
         
-        
         mZoomView = (ImageZoomView)findViewById(R.id.zoomview);
         mZoomView.setZoomState(mZoomControl.getZoomState());
         mZoomView.setImage(mBitmap);
@@ -82,6 +82,7 @@ public class TutorialZoomActivity4 extends Activity {
         resetZoomState();
         
         mZoomView.setOnTouchListener(mPinchZoomListener);
+        mZoomView.setOnLongClickListener(this);
         
         final Button b = (Button)this.findViewById(R.id.zoomtype); 
         b.setOnClickListener(new OnClickListener() {
@@ -151,5 +152,12 @@ public class TutorialZoomActivity4 extends Activity {
         mZoomControl.getZoomState().setZoom(1f);
         mZoomControl.getZoomState().notifyObservers();
     }
+
+	@Override
+	public boolean onLongClick(View v) {
+		// TODO Auto-generated method stub
+		Toast.makeText(getApplicationContext(), "On Long Click", Toast.LENGTH_SHORT).show();
+		return true;
+	}
 
 }
