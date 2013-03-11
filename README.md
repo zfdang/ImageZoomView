@@ -1,7 +1,7 @@
 ImageZoomView
 =============
 
-Image view which enables pinch / pan 
+Android widget which acts as pinch / pan ImageView.
 
 Features:
 -------------
