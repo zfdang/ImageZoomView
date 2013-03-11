@@ -10,6 +10,11 @@ Features:
 3. work with long click event
 4. work with ViewPager
 
+Demo
+=============
+https://github.com/zfdang/ImageZoomView/raw/master/dist/ImageZoomView.apk
+
+
 Related Library
 =============
 https://github.com/zfdang/TouchImageView
