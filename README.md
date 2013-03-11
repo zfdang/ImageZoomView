@@ -10,6 +10,10 @@ Features:
 3. work with long click event
 4. work with ViewPager
 
+Related Library
+=============
+https://github.com/zfdang/TouchImageView
+
 References:
 =============
 
