@@ -3,9 +3,15 @@ ImageZoomView
 
 Image view which enables pinch / pan 
 
+Features:
+-------------
+1. pinch image to zoom out / zoom in
+2. one finger to move image
+3. work with long click event
+4. work with ViewPager
+
 References:
 =============
-
 
 1. Android one finger zoom tutorial 
 -------------
