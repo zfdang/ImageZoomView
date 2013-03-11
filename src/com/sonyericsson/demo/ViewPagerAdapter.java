@@ -1,4 +1,4 @@
-package com.sonyericsson.tutorial.zoom4;
+package com.sonyericsson.demo;
 
 import java.util.ArrayList;
 

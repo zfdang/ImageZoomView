@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.sonyericsson.tutorial.zoom4;
+package com.sonyericsson.demo;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -33,7 +33,7 @@ import android.widget.Toast;
 /**
  * Activity for zoom tutorial 1
  */
-public class TutorialZoomActivity4 extends Activity 
+public class Demo extends Activity 
 	implements OnLongClickListener, OnPageChangeListener {
 
     private ViewPager vp;
@@ -45,7 +45,7 @@ public class TutorialZoomActivity4 extends Activity
 
     // image sources
     private static final int[] m_pics = { R.drawable.ballon,
-            R.drawable.snapshot, R.drawable.ballon};
+            R.drawable.snapshot, R.drawable.tintin};
 
     
     /** Constant used as menu item id for resetting zoom state */
