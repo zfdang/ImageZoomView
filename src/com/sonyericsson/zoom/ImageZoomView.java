@@ -135,10 +135,14 @@ public class ImageZoomView extends View implements Observer {
             mRectSrc.top = (int)(panY * bitmapHeight - viewHeight / (zoomY * 2));
             mRectSrc.right = (int)(mRectSrc.left + viewWidth / zoomX);
             mRectSrc.bottom = (int)(mRectSrc.top + viewHeight / zoomY);
-            mRectDst.left = getLeft();
-            mRectDst.top = getTop();
-            mRectDst.right = getRight();
-            mRectDst.bottom = getBottom();
+            // getLeft / getTop returns the location of the view relative to its parent
+            // use getLocationOnScreen
+            final int[] location = new int[2];
+            getLocationOnScreen(location);
+            mRectDst.left = location[0];
+            mRectDst.top = location[1];
+            mRectDst.right = mRectDst.left + getWidth();
+            mRectDst.bottom = mRectDst.top + getHeight();
 
             // Adjust source rectangle so that it fits within the source image.
             if (mRectSrc.left < 0) {

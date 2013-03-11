@@ -23,7 +23,7 @@ public class PinchZoomListener
         UNDEFINED, PAN, PINCHZOOM
     }
 
-    private static final String TAG = "PinchZoomListener";
+//    private static final String TAG = "PinchZoomListener";
 
     /** Current listener mode */
     private Mode mMode = Mode.UNDEFINED;

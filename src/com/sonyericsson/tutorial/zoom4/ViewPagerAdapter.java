@@ -52,28 +52,28 @@ public class ViewPagerAdapter extends PagerAdapter {
 	public Object instantiateItem(ViewGroup container, int position) {
 		// initialize TouchImageView
 		int btResource = m_pics[position];
-	    Bitmap mBitmap = BitmapFactory.decodeResource(m_context.getResources(),btResource);
+	    Bitmap bitmap = BitmapFactory.decodeResource(m_context.getResources(), btResource);
 
-	    DynamicZoomControl mZoomControl = new DynamicZoomControl();
-	    PinchZoomListener mPinchZoomListener = new PinchZoomListener(m_context);
-        mPinchZoomListener.setZoomControl(mZoomControl);
+	    DynamicZoomControl zoomControl = new DynamicZoomControl();
+	    PinchZoomListener pinchZoomListener = new PinchZoomListener(m_context);
+        pinchZoomListener.setZoomControl(zoomControl);
         
-        ImageZoomView mZoomView = new ImageZoomView(m_context, null);
-        mZoomView.setZoomState(mZoomControl.getZoomState());
-        mZoomView.setImage(mBitmap);
+        ImageZoomView zoomView = new ImageZoomView(m_context, null);
+        zoomView.setZoomState(zoomControl.getZoomState());
+        zoomView.setImage(bitmap);
 
-        mZoomControl.setAspectQuotient(mZoomView.getAspectQuotient());
+        zoomControl.setAspectQuotient(zoomView.getAspectQuotient());
 
-        mZoomView.setOnTouchListener(mPinchZoomListener);
-        mZoomView.setCanScrollHorizontally(mPinchZoomListener);
-        mZoomView.setOnLongClickListener((OnLongClickListener)m_context);
+        zoomView.setOnTouchListener(pinchZoomListener);
+        zoomView.setCanScrollHorizontally(pinchZoomListener);
+        zoomView.setOnLongClickListener((OnLongClickListener)m_context);
 
 		LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(
 			LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		mZoomView.setLayoutParams(mParams);
-		((ViewPager) container).addView(mZoomView, 0);
+		zoomView.setLayoutParams(mParams);
+		((ViewPager) container).addView(zoomView, 0);
 
-		return mZoomView;
+		return zoomView;
 	}
 
 	@Override
