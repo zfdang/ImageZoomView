@@ -49,7 +49,6 @@ public class Demo extends Activity
 
     
     /** Constant used as menu item id for resetting zoom state */
-    private static final int MENU_ID_RESET = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,25 +97,17 @@ public class Demo extends Activity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE, MENU_ID_RESET, 2, R.string.menu_reset);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case MENU_ID_RESET:
-                resetZoomState();
+            default:
                 break;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Reset zoom state and notify observers
-     */
-    private void resetZoomState() {
     }
 
 	@Override
