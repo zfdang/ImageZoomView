@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/full_image_container"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-    <com.sonyericsson.zoom.ImageZoomView
-        android:id="@+id/zoomview"
+    <!-- Image -->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-    <Button
-        android:id="@+id/zoomtype"
+    <!-- Page indicator "N/M" -->
+    <TextView
+        android:id="@+id/full_image_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LongPressZoom" />
-
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="2/20" />
 </FrameLayout>

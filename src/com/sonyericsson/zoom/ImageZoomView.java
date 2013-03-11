@@ -50,6 +50,9 @@ public class ImageZoomView extends View implements Observer {
     /** State of the zoom. */
     private ZoomState mState;
 
+    /** decide whether to scroll for this view **/
+    private CanScrollHorizontally m_canScrollHorizontallyListner;
+
     // Public methods
 
     /**
@@ -90,6 +93,17 @@ public class ImageZoomView extends View implements Observer {
         invalidate();
     }
 
+    /**
+     * call this method before this view was destroyed
+     * 
+     */
+    public void cleanup(){
+    	if(mBitmap != null)
+    		mBitmap.recycle();
+    	this.setOnTouchListener(null);
+    	if(mState != null)
+    		mState.deleteObservers();
+    }
     /**
      * Gets reference to object holding aspect quotient
      * 
@@ -162,4 +176,14 @@ public class ImageZoomView extends View implements Observer {
         invalidate();
     }
 
+    @Override
+	public boolean canScrollHorizontally(int direction) {
+    	return m_canScrollHorizontallyListner.canScrollHorizontally(direction);
+    }
+
+	public void setCanScrollHorizontally(CanScrollHorizontally l) {
+		// TODO Auto-generated method stub
+		this.m_canScrollHorizontallyListner = l;
+	}
+    
 }

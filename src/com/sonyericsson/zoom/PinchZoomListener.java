@@ -10,7 +10,8 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-public class PinchZoomListener implements View.OnTouchListener {
+public class PinchZoomListener 
+	implements View.OnTouchListener, CanScrollHorizontally {
     /**
      * Enum defining listener modes. Before the view is touched the listener is
      * in the UNDEFINED mode. Once touch starts it can enter either one of the
@@ -22,7 +23,7 @@ public class PinchZoomListener implements View.OnTouchListener {
         UNDEFINED, PAN, PINCHZOOM
     }
 
-//    private static final String TAG = "PinchZoomListener";
+    private static final String TAG = "PinchZoomListener";
 
     /** Current listener mode */
     private Mode mMode = Mode.UNDEFINED;
@@ -224,4 +225,17 @@ public class PinchZoomListener implements View.OnTouchListener {
         float y = event.getY(0) + event.getY(1);
         point.set(x / 2, y / 2);
     }
+
+	@Override
+	public boolean canScrollHorizontally(int direction) {
+        // clear longclick events
+        clearCheckForLongClick();
+
+        float scale = mZoomControl.getZoomState().getZoom();
+        if (scale <= 1.05) {
+            // allow scroll when image are almost fit the screen (1.05 to better UE)
+            return false;
+        }
+        return true;
+	}
 }

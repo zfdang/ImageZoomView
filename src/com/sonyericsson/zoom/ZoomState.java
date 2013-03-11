@@ -26,19 +26,19 @@ public class ZoomState extends Observable {
     /**
      * Zoom level A value of 1.0 means the content fits the view.
      */
-    private float mZoom;
+    private float mZoom = 1.0f;
 
     /**
      * Pan position x-coordinate X-coordinate of zoom window center position,
      * relative to the width of the content.
      */
-    private float mPanX;
+    private float mPanX = 0.5f;
 
     /**
      * Pan position y-coordinate Y-coordinate of zoom window center position,
      * relative to the height of the content.
      */
-    private float mPanY;
+    private float mPanY = 0.5f;
 
     // Public methods
 

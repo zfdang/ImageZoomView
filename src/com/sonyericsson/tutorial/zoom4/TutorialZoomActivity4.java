@@ -17,97 +17,71 @@
 package com.sonyericsson.tutorial.zoom4;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.widget.Button;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.sonyericsson.zoom.DynamicZoomControl;
-import com.sonyericsson.zoom.ImageZoomView;
-import com.sonyericsson.zoom.LongPressZoomListener;
-import com.sonyericsson.zoom.PinchZoomListener;
 
 /**
  * Activity for zoom tutorial 1
  */
-public class TutorialZoomActivity4 extends Activity implements OnLongClickListener {
+public class TutorialZoomActivity4 extends Activity 
+	implements OnLongClickListener, OnPageChangeListener {
 
+    private ViewPager vp;
+    private ViewPagerAdapter vpAdapter;
+
+    // pagination navigator current position
+	private TextView m_tv;
+	private int m_imageIdx;
+
+    // image sources
+    private static final int[] m_pics = { R.drawable.ballon,
+            R.drawable.snapshot, R.drawable.ballon};
+
+    
     /** Constant used as menu item id for resetting zoom state */
     private static final int MENU_ID_RESET = 0;
 
-    /** Image zoom view */
-    private ImageZoomView mZoomView;
-
-    /** Zoom control */
-    private DynamicZoomControl mZoomControl;
-
-    /** Decoded bitmap image */
-    private Bitmap mBitmap;
-
-    /** On touch listener for zoom view */
-    private LongPressZoomListener mZoomListener;
-    
-    private PinchZoomListener mPinchZoomListener;
-    
-    private boolean longpressZoom = false;
-    
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        mZoomControl = new DynamicZoomControl();
+        // get page indicator textview
+        m_tv = (TextView) findViewById(R.id.full_image_indicator);
 
-        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.tintin);
+        vp = (ViewPager) findViewById(R.id.viewpager);
+        vpAdapter = new ViewPagerAdapter(m_pics, this);
+        vp.setAdapter(vpAdapter);
+        vp.setOnPageChangeListener(this);
+        vp.setCurrentItem(m_imageIdx);
+        setCurIndicator(m_imageIdx);
 
-        mZoomListener = new LongPressZoomListener(getApplicationContext());
-        mZoomListener.setZoomControl(mZoomControl);
-        mPinchZoomListener = new PinchZoomListener(getApplicationContext());
-        mPinchZoomListener.setZoomControl(mZoomControl);
-        
-        mZoomView = (ImageZoomView)findViewById(R.id.zoomview);
-        mZoomView.setZoomState(mZoomControl.getZoomState());
-        mZoomView.setImage(mBitmap);
-
-        mZoomControl.setAspectQuotient(mZoomView.getAspectQuotient());
-
-        resetZoomState();
-        
-        mZoomView.setOnTouchListener(mPinchZoomListener);
-        mZoomView.setOnLongClickListener(this);
-        
-        final Button b = (Button)this.findViewById(R.id.zoomtype); 
-        b.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                if(longpressZoom){
-                    mZoomView.setOnTouchListener(mPinchZoomListener);
-                    longpressZoom = false;
-                    b.setText("LongPressZoom");
-                }else{
-                    mZoomView.setOnTouchListener(mZoomListener);
-                    longpressZoom = true;
-                    b.setText("PinchZoom");
-                }
-            }
-        });
-        
-        CharSequence text = "Pinch zoom ftw!\n(Press button top left to switch between zoom modes)";
-        
-        int duration = Toast.LENGTH_LONG;
-
-        Toast toast = Toast.makeText(this, text, duration);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
-    
+
+    /**
+     * set current page indicator "N/M"
+     */
+    private void setCurIndicator(int position)
+    {
+		m_imageIdx = position;
+		String pos = String.format("%s/%s", position+1, m_pics.length);
+		m_tv.setText(pos);
+    }
+
     @Override
     public void onPause(){
         super.onPause();
@@ -120,10 +94,6 @@ public class TutorialZoomActivity4 extends Activity implements OnLongClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        mBitmap.recycle();
-        mZoomView.setOnTouchListener(null);
-        mZoomControl.getZoomState().deleteObservers();
     }
 
     @Override
@@ -147,10 +117,6 @@ public class TutorialZoomActivity4 extends Activity implements OnLongClickListen
      * Reset zoom state and notify observers
      */
     private void resetZoomState() {
-        mZoomControl.getZoomState().setPanX(0.5f);
-        mZoomControl.getZoomState().setPanY(0.5f);
-        mZoomControl.getZoomState().setZoom(1f);
-        mZoomControl.getZoomState().notifyObservers();
     }
 
 	@Override
@@ -158,6 +124,23 @@ public class TutorialZoomActivity4 extends Activity implements OnLongClickListen
 		// TODO Auto-generated method stub
 		Toast.makeText(getApplicationContext(), "On Long Click", Toast.LENGTH_SHORT).show();
 		return true;
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPageSelected(int arg0) {
+		setCurIndicator(arg0);
 	}
 
 }
