@@ -45,7 +45,7 @@ public class Demo extends Activity
 
     // image sources
     private static final int[] m_pics = { R.drawable.ballon,
-            R.drawable.snapshot, R.drawable.tintin};
+            R.drawable.tintin1, R.drawable.tintin2};
 
     
     /** Constant used as menu item id for resetting zoom state */
